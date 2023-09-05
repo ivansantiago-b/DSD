@@ -28,7 +28,7 @@ entity arithmetic_system is
         a, b : in std_logic_vector (3 downto 0);
         sel : in std_logic_vector (1 downto 0);
         cathodes : out std_logic_vector (6 downto 0);
-        anodes : out std_logic_vector (2 downto 0)
+        anodes : out std_logic_vector (3 downto 0)
     );
 end arithmetic_system;
 

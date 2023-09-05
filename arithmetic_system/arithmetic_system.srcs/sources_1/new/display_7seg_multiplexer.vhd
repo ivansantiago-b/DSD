@@ -27,7 +27,7 @@ entity display_7seg_multiplexer is
     port(
         clk100M : in std_logic;
         display0, display1, display2 : in std_logic_vector (6 downto 0);
-        anodes : out std_logic_vector (2 downto 0);
+        anodes : out std_logic_vector (3 downto 0);
         cathodes : out std_logic_vector (6 downto 0)
     );
 end display_7seg_multiplexer;
@@ -50,10 +50,10 @@ clk50Hz:
     end process;
     
     with selector select
-        anodes <= "011" when "01",
-                  "101" when "10",
-                  "110" when "11",
-                  "111" when others;
+        anodes <= "1011" when "01",
+                  "1101" when "10",
+                  "1110" when "11",
+                  "1111" when others;
     with selector select
         cathodes <= display2  when "01",
                     display1  when "10",

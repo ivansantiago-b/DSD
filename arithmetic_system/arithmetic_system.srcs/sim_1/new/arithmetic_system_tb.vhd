@@ -31,7 +31,7 @@ architecture Behavioral of arithmetic_system_tb is
     signal a, b : std_logic_vector (3 downto 0);
     signal sel : std_logic_vector (1 downto 0);
     signal cathodes : std_logic_vector (6 downto 0);
-    signal anodes : std_logic_vector (2 downto 0);
+    signal anodes : std_logic_vector (3 downto 0);
 begin
 dut:
     entity work.arithmetic_system port map(clk => clk, a => a, b => b, sel => sel, cathodes => cathodes, anodes => anodes);

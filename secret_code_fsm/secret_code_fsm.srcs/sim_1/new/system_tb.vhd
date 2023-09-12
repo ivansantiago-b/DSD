@@ -38,9 +38,9 @@ stimulus:
     process
     begin
         master_clock <= '0';
-        wait for 10 ns;
+        wait for 5 ns;
         master_clock <= '1';
-        wait for 10 ns;
+        wait for 5 ns;
     end process;
     
     process
@@ -49,21 +49,21 @@ stimulus:
         wait for 10 ns;
         reset <= '0';
         buttons <= "001";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "010";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "100";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "001";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "010";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "001";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "100";
-        wait for 60 ms;
+        wait for 50 ms;
         buttons <= "001";
-        wait for 60 ms;
+        wait for 50 ms;
     end process;
     
 end Behavioral;

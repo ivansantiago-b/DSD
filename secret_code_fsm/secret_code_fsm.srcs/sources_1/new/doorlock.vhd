@@ -93,9 +93,9 @@ output:
                 elsif (current_state = q3) or (current_state = q6) then
                     pass <= '0';
                     fail <= '1';
-                --else
-                    --pass <= '0';
-                    --fail <= '0';
+                else
+                    pass <= '0';
+                    fail <= '0';
                 end if;
             end if;
     end process output;

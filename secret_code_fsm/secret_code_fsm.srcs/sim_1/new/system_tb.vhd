@@ -34,7 +34,7 @@ begin
 dut:
     entity work.system port map(master_clock => master_clock, reset => reset, secret_code => secret_code, buttons => buttons, pass => pass, fail => fail);
 stimulus:
-    secret_code <= "00100100";
+    secret_code <= "01100100";
     process
     begin
         master_clock <= '0';
@@ -45,25 +45,105 @@ stimulus:
     
     process
     begin
+    -- Sequence: 0 1 2 1
         reset <= '1';
         wait for 10 ns;
         reset <= '0';
         buttons <= "001";
-        wait for 50 ms;
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
         buttons <= "010";
-        wait for 50 ms;
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
         buttons <= "100";
-        wait for 50 ms;
-        buttons <= "001";
-        wait for 50 ms;
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
         buttons <= "010";
-        wait for 50 ms;
-        buttons <= "001";
-        wait for 50 ms;
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+    -- Sequence: 1 1 2 1
+        reset <= '1';
+        wait for 10 ns;
+        reset <= '0';
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
         buttons <= "100";
-        wait for 50 ms;
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+    -- Sequence: 0 2 2 1
+        reset <= '1';
+        wait for 10 ns;
+        reset <= '0';
         buttons <= "001";
-        wait for 50 ms;
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "100";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "100";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+    -- Sequence: 0 1 0 1
+        reset <= '1';
+        wait for 10 ns;
+        reset <= '0';
+        buttons <= "001";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "001";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+    -- Sequence: 0 1 2 2
+        reset <= '1';
+        wait for 10 ns;
+        reset <= '0';
+        buttons <= "001";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "010";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "100";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
+        buttons <= "100";
+        wait for 36 ms;
+        buttons <= "000";
+        wait for 6 ms;
     end process;
-    
 end Behavioral;

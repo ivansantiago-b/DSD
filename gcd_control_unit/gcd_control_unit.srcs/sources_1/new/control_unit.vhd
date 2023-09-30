@@ -22,22 +22,59 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity control_unit is
---  Port ( );
+    port(
+        clock, reset, go : in std_logic;
+        flags : in std_logic_vector(2 downto 0);
+        x_we, y_we : out std_logic;
+        gcd : out std_logic_vector(8 downto 0)
+    );
 end control_unit;
 
 architecture Behavioral of control_unit is
-
+    type state_t is (start, input, test, decrement_x, decrement_y, done);
+    signal current_state, next_state : state_t;
 begin
+state_register:
+    process(clock, reset)
+    begin
+        if reset = '1' then
+            current_state <= start;
+        elsif rising_edge(clock) then
+            current_state <= next_state;
+        end if;
+    end process;
 
+machine_input:
+    process(current_state)
+    begin
+        case current_state is
+            when start =>
+                if go = '1' then
+                    next_state <= input;
+                end if;
+            when input =>
+                next_state <= test;
+            when test =>
+                if flags = "010" then
+                    next_state <= done;
+                elsif flags = "100" then
+                    next_state <= decrement_y;
+                else
+                    next_state <= decrement_x; 
+                end if;
+            when decrement_x =>
+                next_state <= test;
+            when decrement_y =>
+                next_state <= test;
+            when others =>
+                null;
+        end case;
+    end process;
 
+machine_output:
+    process(clock, reset)
+    begin
+    
+    end process;
 end Behavioral;

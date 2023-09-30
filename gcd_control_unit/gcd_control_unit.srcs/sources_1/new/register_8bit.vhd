@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity register_8bit is
     port(
-        clock, reset, enable : in std_logic;
+        clock, reset, we : in std_logic;
         data_in : in std_logic_vector(7 downto 0);
         data_out : out std_logic_vector(7 downto 0)
     );
@@ -38,7 +38,7 @@ begin
         if reset = '1' then
             data_out <= (others => '0');
         elsif rising_edge(clock) then
-            if enable = '1' then
+            if we = '1' then
                 data_out <= data_in;
             end if;
         end if;

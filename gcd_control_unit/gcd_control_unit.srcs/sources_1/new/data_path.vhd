@@ -43,4 +43,5 @@ begin
     U4: entity work.subtractor port map(a => ry, b => rx, r => sub_y);
     rx_in <= x_in when x_selector = '1' else sub_x;
     ry_in <= y_in when y_selector = '1' else sub_y;
+    gcd <= rx;
 end Behavioral;

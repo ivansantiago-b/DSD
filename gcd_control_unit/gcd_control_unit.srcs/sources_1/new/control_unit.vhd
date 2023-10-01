@@ -31,9 +31,8 @@ entity control_unit is
 end control_unit;
 
 architecture Behavioral of control_unit is
-    type state_t is (start, input, test, decrement_x, decrement_y, done);
+    type state_t is (start, input, test, update_x, update_y, done);
     signal current_state, next_state : state_t;
-    signal x_gcd : std_logic_vector(7 downto 0);
 begin
 state_register:
     process(clock, reset)
@@ -43,10 +42,10 @@ state_register:
         elsif rising_edge(clock) then
             current_state <= next_state;
         end if;
-    end process;
+    end process state_register;
 
 machine_input:
-    process(current_state)
+    process(current_state, flags, go)
     begin
         case current_state is
             when start =>
@@ -61,23 +60,23 @@ machine_input:
                 if flags = "010" then
                     next_state <= done;
                 elsif flags = "100" then
-                    next_state <= decrement_y;
+                    next_state <= update_y;
                 else
-                    next_state <= decrement_x; 
+                    next_state <= update_x;
                 end if;
-            when decrement_x =>
+            when update_x =>
                 next_state <= test;
-            when decrement_y =>
+            when update_y =>
                 next_state <= test;
             when done =>
                 next_state <= done;
             when others =>
                 null;
         end case;
-    end process;
+    end process machine_input;
 
 machine_output:
-    process(clock, reset)
+    process(clock, reset, current_state)
     begin
         if reset = '1' then
             x_sel <= '1';
@@ -88,22 +87,28 @@ machine_output:
         elsif rising_edge(clock) then
             case current_state is
                 when input =>
+                    x_sel <= '1';
+                    y_sel <= '1';
                     x_we <= '1';
                     y_we <= '1';
                 when test =>
                     x_we <= '0';
                     y_we <= '0';
+                when update_x =>
                     x_sel <= '0';
-                    y_sel <= '0';
-                when decrement_x =>
                     x_we <= '1';
-                when decrement_y =>
+                    y_we <= '0';
+                when update_y =>
+                    y_sel <= '0';
                     y_we <= '1';
+                    x_we <= '0';
                 when done =>
-                    gcd_we <= '1'; 
+                    x_we <= '0';
+                    y_we <= '0';
+                    gcd_we <= '1';
                 when others =>
-                    null;         
+                    null;
             end case;
         end if;
-    end process;
+    end process machine_output;
 end Behavioral;

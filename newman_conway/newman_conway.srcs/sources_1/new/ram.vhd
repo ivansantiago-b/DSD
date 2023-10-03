@@ -26,7 +26,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity ram is
     port(
-        we: in std_logic;
+        clock, we: in std_logic;
         address : in std_logic_vector(7 downto 0);
         data_in : in std_logic_vector(6 downto 0);
         data_out : out std_logic_vector(6 downto 0)
@@ -37,10 +37,12 @@ architecture Behavioral of ram is
     type ram_t is array(255 downto 0) of std_logic_vector(6 downto 0);
     signal ram_data : ram_t;
 begin
-    process(we)
+    process(clock, we)
     begin
-        if rising_edge(we) then
-            ram_data(to_integer(unsigned(address))) <= data_in;
+        if rising_edge(clock) then
+            if we = '1' then
+                ram_data(to_integer(unsigned(address))) <= data_in;
+            end if;
         end if;
     end process;
     data_out <= ram_data(to_integer(unsigned(address)));

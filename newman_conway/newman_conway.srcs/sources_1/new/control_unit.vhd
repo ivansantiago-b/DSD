@@ -26,11 +26,10 @@ entity control_unit is
     port(
         clock, reset, go : in std_logic;
         comp_n, comp_i : in std_logic;
-        wa_sel, i_sel, y_sel : out std_logic;
+        wa_sel, i_sel, y_sel, ri_sel : out std_logic;
         ra_sel : out std_logic_vector(1 downto 0);
         n_we, i_we, x_we, y_we, t_we, ram_we : out std_logic;
-        i_ext : out std_logic_vector(7 downto 0);
-        r : out std_logic_vector(6 downto 0)
+        i_ext, r: out std_logic_vector(7 downto 0)
     );
 end control_unit;
 
@@ -103,23 +102,60 @@ machine_output:
             ram_we <= '0';
             i_sel <= '1';
             y_sel <= '0';
-            wa_sel <= '1';
+            wa_sel <= '0';
             ra_sel <= "00";
-            r <= "0000000";
+            ri_sel <= '1';
+            r <= x"00";
             i_ext <= x"00";
         elsif falling_edge(clock) then
-            if current_state = input then
-                n_we <= '1';
-                i_we <= '1';
-                ram_we <= '1';
-            elsif current_state = a1 then
-                n_we <= '0';
-                i_ext <= x"01";
-                r <= "0000001";
-            elsif current_state = a2 then
-                i_ext <= x"02";
-                r <= "0000001";
-            end if;
-        end if;
+            case current_state is
+                when input =>
+                    i_sel <= '1';   -- Select extern i
+                    i_we <= '1';    -- Write i register   
+                    ri_sel <= '1';  -- Select extern ram input
+                    wa_sel <= '0';  -- Select i as write address
+                    i_ext <= x"00"; -- a(0) = 0
+                    r <= x"00"; 
+                    ram_we <= '1';  -- Write RAM
+                    n_we <= '1';    -- Write n register
+                when a1 =>
+                    n_we <= '0';
+                    ram_we <= '0';
+                    i_ext <= x"01"; -- a(1) = 1
+                    r <= x"01";
+                when a2 =>
+                    ram_we <= '1';
+                    i_ext <= x"02"; -- a(2) = 2
+                when pop_x =>
+                    i_we <= '0';
+                    ram_we <= '0';
+                    ra_sel <= "00"; -- Select i as read address
+                    x_we <= '1';
+                when pop_y =>
+                    x_we <= '0';
+                    ra_sel <= "01"; -- Select x as read address
+                    y_sel <= '1';   -- Select RAM out as y input
+                    y_we <= '1';
+                    i_sel <= '0';   -- Increment i
+                    i_we <= '1';
+                when pop_z =>
+                    i_we <= '0';
+                    ra_sel <= "11"; -- Select i - x as read address
+                    y_sel <= '0';   -- Select z as y input;
+                    y_we <= '1';
+                when push =>
+                    y_we <= '0';
+                    ri_sel <= '0';  -- Select y as ram input
+                    wa_sel <= '0';  -- Select i as write address
+                    ram_we <= '1';
+                when test_i =>
+                    ram_we <= '0';
+                when done =>
+                    ra_sel <= "10"; -- Select n as read address
+                    t_we <= '1';    -- write t a(n)
+                when others =>
+                    null;
+            end case;
+        end if;   
     end process machine_output;
 end Behavioral;

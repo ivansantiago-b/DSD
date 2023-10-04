@@ -28,13 +28,13 @@ entity ram is
     port(
         clock, we : in std_logic;
         write_address, read_address : in std_logic_vector(7 downto 0);
-        data_in : in std_logic_vector(6 downto 0);
-        data_out : out std_logic_vector(6 downto 0)
+        data_in : in std_logic_vector(7 downto 0);
+        data_out : out std_logic_vector(7 downto 0)
     );
 end ram;
 
 architecture Behavioral of ram is
-    type ram_t is array(0 to 255) of std_logic_vector(6 downto 0);
+    type ram_t is array(0 to 255) of std_logic_vector(7 downto 0);
     signal ram_data : ram_t;
 begin
     process(clock, we)

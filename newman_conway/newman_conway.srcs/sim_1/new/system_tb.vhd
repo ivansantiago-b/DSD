@@ -48,10 +48,10 @@ stimulus:
         reset <= '1';
         wait for 10 ns;
         reset <= '0';
-        n <= x"FF";
         button <= '1';
         wait for 10 ns;
         button <= '0';
         wait;
     end process;
+    n <= x"FF";
 end Behavioral;

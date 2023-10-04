@@ -49,7 +49,7 @@ stimulus:
         wait for 10 ns;
         reset <= '0';
         button <= '1';
-        wait for 10 ns;
+        wait for 40 ns;
         button <= '0';
         wait;
     end process;

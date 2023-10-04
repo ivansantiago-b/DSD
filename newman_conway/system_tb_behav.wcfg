@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="12,749.450 ns"></ZoomStartTime>
-      <ZoomEndTime time="12,804.151 ns"></ZoomEndTime>
-      <Cursor1Time time="12,753.800 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000000000 ms"></ZoomStartTime>
+      <ZoomEndTime time="39.321605000 ms"></ZoomEndTime>
+      <Cursor1Time time="0.000000000 ms"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="312"></NameColumnWidth>
-      <ValueColumnWidth column_width="129"></ValueColumnWidth>
+      <ValueColumnWidth column_width="124"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="15" />
+   <WVObjectSize size="13" />
    <wvobject type="logic" fp_name="/system_tb/master_clock">
       <obj_property name="ElementShortName">master_clock</obj_property>
       <obj_property name="ObjectShortName">master_clock</obj_property>
@@ -31,21 +31,27 @@
       <obj_property name="ElementShortName">button</obj_property>
       <obj_property name="ObjectShortName">button</obj_property>
    </wvobject>
+   <wvobject type="logic" fp_name="/system_tb/dut/pulse">
+      <obj_property name="ElementShortName">pulse</obj_property>
+      <obj_property name="ObjectShortName">pulse</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/system_tb/n">
       <obj_property name="ElementShortName">n[7:0]</obj_property>
       <obj_property name="ObjectShortName">n[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/system_tb/anodes">
-      <obj_property name="ElementShortName">anodes[3:0]</obj_property>
-      <obj_property name="ObjectShortName">anodes[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/system_tb/cathodes">
-      <obj_property name="ElementShortName">cathodes[6:0]</obj_property>
-      <obj_property name="ObjectShortName">cathodes[6:0]</obj_property>
+   <wvobject type="array" fp_name="/system_tb/dut/U0/n">
+      <obj_property name="ElementShortName">n[7:0]</obj_property>
+      <obj_property name="ObjectShortName">n[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="other" fp_name="/system_tb/dut/U1/current_state">
       <obj_property name="ElementShortName">current_state</obj_property>
       <obj_property name="ObjectShortName">current_state</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/system_tb/dut/U0/i">
+      <obj_property name="ElementShortName">i[7:0]</obj_property>
+      <obj_property name="ObjectShortName">i[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/system_tb/dut/U0/x">
       <obj_property name="ElementShortName">x[7:0]</obj_property>
@@ -57,31 +63,17 @@
       <obj_property name="ObjectShortName">y[7:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/system_tb/dut/U0/i">
-      <obj_property name="ElementShortName">i[7:0]</obj_property>
-      <obj_property name="ObjectShortName">i[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/system_tb/dut/U0/n">
-      <obj_property name="ElementShortName">n[7:0]</obj_property>
-      <obj_property name="ObjectShortName">n[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/system_tb/dut/U0/ram_out">
-      <obj_property name="ElementShortName">ram_out[6:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_out[6:0]</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/system_tb/dut/U0/t">
       <obj_property name="ElementShortName">t[7:0]</obj_property>
       <obj_property name="ObjectShortName">t[7:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/system_tb/dut/U0/RAM/write_address">
-      <obj_property name="ElementShortName">write_address[7:0]</obj_property>
-      <obj_property name="ObjectShortName">write_address[7:0]</obj_property>
+   <wvobject type="array" fp_name="/system_tb/anodes">
+      <obj_property name="ElementShortName">anodes[3:0]</obj_property>
+      <obj_property name="ObjectShortName">anodes[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/system_tb/dut/U0/RAM/read_address">
-      <obj_property name="ElementShortName">read_address[7:0]</obj_property>
-      <obj_property name="ObjectShortName">read_address[7:0]</obj_property>
+   <wvobject type="array" fp_name="/system_tb/cathodes">
+      <obj_property name="ElementShortName">cathodes[6:0]</obj_property>
+      <obj_property name="ObjectShortName">cathodes[6:0]</obj_property>
    </wvobject>
 </wave_config>

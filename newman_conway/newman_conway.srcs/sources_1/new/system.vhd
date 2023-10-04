@@ -25,12 +25,21 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity system is
     port(
         master_clock, reset, button: in std_logic;
-        n : in std_logic_vector(7 downto 0)
+        n : in std_logic_vector(7 downto 0);
+        anodes : out std_logic_vector(3 downto 0);
+        cathodes : out std_logic_vector(6 downto 0)
     );
 end system;
 
 architecture Behavioral of system is
-    
+    signal ra_sel : std_logic_vector(1 downto 0);
+    signal wa_sel, i_sel, y_sel, n_we, i_we, x_we, y_we, t_we, ram_we, comp_n, comp_i : std_logic;
+    signal r : std_logic_vector(6 downto 0);
+    signal i_ext, t : std_logic_vector(7 downto 0);
 begin
-
+U0:
+    entity work.data_path port map(ra_sel => ra_sel, clock => master_clock, reset => reset, wa_sel => wa_sel, i_sel => i_sel, y_sel => y_sel, n_we => n_we, i_we => i_we, x_we => x_we, y_we => y_we, t_we => t_we, ram_we => ram_we, n_in => n, i_ext => i_ext, r => r, comp_n => comp_n, comp_i => comp_i, t => t);
+U1:
+    entity work.control_unit port map(clock => master_clock, reset => reset, go => button, comp_n => comp_n, comp_i => comp_i, wa_sel => wa_sel, i_sel => i_sel, y_sel => y_sel, ra_sel => ra_sel, n_we => n_we, i_we => i_we, x_we => x_we, y_we => y_we, t_we => t_we, ram_we => ram_we, i_ext => i_ext, r => r);
+    
 end Behavioral;

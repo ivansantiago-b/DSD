@@ -90,4 +90,36 @@ machine_input:
                 null;
         end case;
     end process;
+
+machine_output:
+    process(clock, reset, current_state)
+    begin
+        if reset = '1' then
+            t_we <= '0';
+            n_we <= '0';
+            i_we <= '0';
+            x_we <= '0';
+            y_we <= '0';
+            ram_we <= '0';
+            i_sel <= '1';
+            y_sel <= '0';
+            wa_sel <= '1';
+            ra_sel <= "00";
+            r <= "0000000";
+            i_ext <= x"00";
+        elsif falling_edge(clock) then
+            if current_state = input then
+                n_we <= '1';
+                i_we <= '1';
+                ram_we <= '1';
+            elsif current_state = a1 then
+                n_we <= '0';
+                i_ext <= x"01";
+                r <= "0000001";
+            elsif current_state = a2 then
+                i_ext <= x"02";
+                r <= "0000001";
+            end if;
+        end if;
+    end process machine_output;
 end Behavioral;

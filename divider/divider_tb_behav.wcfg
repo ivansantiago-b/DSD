@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="divider_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="divider_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="535.829 ns"></ZoomStartTime>
+      <ZoomEndTime time="612.835 ns"></ZoomEndTime>
+      <Cursor1Time time="600.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="312"></NameColumnWidth>
+      <ValueColumnWidth column_width="114"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject type="logic" fp_name="/divider_tb/clock">
+      <obj_property name="ElementShortName">clock</obj_property>
+      <obj_property name="ObjectShortName">clock</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/reset">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/go">
+      <obj_property name="ElementShortName">go</obj_property>
+      <obj_property name="ObjectShortName">go</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/x">
+      <obj_property name="ElementShortName">x[15:0]</obj_property>
+      <obj_property name="ObjectShortName">x[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/y">
+      <obj_property name="ElementShortName">y[15:0]</obj_property>
+      <obj_property name="ObjectShortName">y[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/d">
+      <obj_property name="ElementShortName">d[15:0]</obj_property>
+      <obj_property name="ObjectShortName">d[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/m">
+      <obj_property name="ElementShortName">m[15:0]</obj_property>
+      <obj_property name="ObjectShortName">m[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/divider_tb/dut/U1/current_state">
+      <obj_property name="ElementShortName">current_state</obj_property>
+      <obj_property name="ObjectShortName">current_state</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/dut/U1/i_we">
+      <obj_property name="ElementShortName">i_we</obj_property>
+      <obj_property name="ObjectShortName">i_we</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/dut/U0/i">
+      <obj_property name="ElementShortName">i[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/dut/U0/sh">
+      <obj_property name="ElementShortName">sh[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sh[31:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/dut/U0/d_en">
+      <obj_property name="ElementShortName">d_en</obj_property>
+      <obj_property name="ObjectShortName">d_en</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/dut/U0/d_sel">
+      <obj_property name="ElementShortName">d_sel</obj_property>
+      <obj_property name="ObjectShortName">d_sel</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/dut/U0/d_we">
+      <obj_property name="ElementShortName">d_we</obj_property>
+      <obj_property name="ObjectShortName">d_we</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/divider_tb/dut/U0/sub">
+      <obj_property name="ElementShortName">sub[16:0]</obj_property>
+      <obj_property name="ObjectShortName">sub[16:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/divider_tb/dut/U0/borrow">
+      <obj_property name="ElementShortName">borrow</obj_property>
+      <obj_property name="ObjectShortName">borrow</obj_property>
+   </wvobject>
+</wave_config>

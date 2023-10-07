@@ -36,11 +36,11 @@ architecture Behavioral of data_path is
     signal rx, ry, sub_x, sub_y, x, y: std_logic_vector(7 downto 0);
 begin
 U0:
-    entity work.register_8bit port map(reset => reset, we => x_we, data_in => x, data_out => rx);
+    entity work.register_8bit port map(clock => clock, reset => reset, we => x_we, data_in => x, data_out => rx);
 U1:
-    entity work.register_8bit port map(reset => reset, we => y_we, data_in => y, data_out => ry);
+    entity work.register_8bit port map(clock => clock, reset => reset, we => y_we, data_in => y, data_out => ry);
 U3:
-    entity work.register_8bit port map(reset => reset, we => gcd_we, data_in => rx, data_out => gcd);
+    entity work.register_8bit port map(clock => clock, reset => reset, we => gcd_we, data_in => rx, data_out => gcd);
 U4:
     entity work.comparator port map(a => rx, b => ry, less => flags(2), equal => flags(1), greater => flags(0));
 U5:

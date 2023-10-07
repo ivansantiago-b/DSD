@@ -76,39 +76,37 @@ machine_input:
     end process machine_input;
 
 machine_output:
-    process(clock, reset, current_state)
+    process(current_state)
     begin
-        if reset = '1' then
-            x_sel <= '1';
-            y_sel <= '1';
-            x_we <= '0';
-            y_we <= '0';
-            gcd_we <= '0';
-        elsif rising_edge(clock) then
-            case current_state is
-                when input =>
-                    x_sel <= '1';
-                    y_sel <= '1';
-                    x_we <= '1';
-                    y_we <= '1';
-                when test =>
-                    x_we <= '0';
-                    y_we <= '0';
-                when update_x =>
-                    x_sel <= '0';
-                    x_we <= '1';
-                    y_we <= '0';
-                when update_y =>
-                    y_sel <= '0';
-                    y_we <= '1';
-                    x_we <= '0';
-                when done =>
-                    x_we <= '0';
-                    y_we <= '0';
-                    gcd_we <= '1';
-                when others =>
-                    null;
-            end case;
-        end if;
+        case current_state is
+            when start =>
+                x_sel <= '1';
+                y_sel <= '1';
+                x_we <= '0';
+                y_we <= '0';
+                gcd_we <= '0';
+            when input =>
+                x_sel <= '1';
+                y_sel <= '1';
+                x_we <= '1';
+                y_we <= '1';
+            when test =>
+                x_we <= '0';
+                y_we <= '0';
+            when update_x =>
+                x_sel <= '0';
+                x_we <= '1';
+                y_we <= '0';
+            when update_y =>
+                y_sel <= '0';
+                y_we <= '1';
+                x_we <= '0';
+            when done =>
+                x_we <= '0';
+                y_we <= '0';
+                gcd_we <= '1';
+            when others =>
+                 null;
+        end case;
     end process machine_output;
 end Behavioral;

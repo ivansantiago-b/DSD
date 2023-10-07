@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity register_8bit is
     port(
-        reset, we : in std_logic;
+        clock, reset, we : in std_logic;
         data_in : in std_logic_vector(7 downto 0);
         data_out : out std_logic_vector(7 downto 0)
     );
@@ -33,12 +33,14 @@ end register_8bit;
 architecture Behavioral of register_8bit is
 
 begin
-    process(we, reset)
+    process(clock, reset, we)
     begin
         if reset = '1' then
             data_out <= (others => '0');
-        elsif rising_edge(we) then
+        elsif rising_edge(clock) then
+            if we = '1' then
                 data_out <= data_in;
+            end if;
         end if;
     end process;
 end Behavioral;

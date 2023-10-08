@@ -53,5 +53,5 @@ stimulus:
         button <= '0';
         wait;
     end process;
-    n <= x"FF";
+    n <= x"0A";
 end Behavioral;

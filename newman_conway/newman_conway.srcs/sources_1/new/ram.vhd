@@ -2,7 +2,7 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 10/01/2023 11:12:34 PM
+-- Create Date: 11/19/2023 03:40:03 PM
 -- Design Name: 
 -- Module Name: ram - Behavioral
 -- Project Name: 
@@ -21,29 +21,30 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity ram is
+    generic(
+        address_width : integer := 8;
+        data_width : integer := 8
+    );
     port(
         clock, we : in std_logic;
-        write_address, read_address : in std_logic_vector(7 downto 0);
-        data_in : in std_logic_vector(7 downto 0);
-        data_out : out std_logic_vector(7 downto 0)
+        read_address, write_address : in std_logic_vector(address_width - 1 downto 0);
+        d : in std_logic_vector(data_width - 1 downto 0);
+        q : out std_logic_vector(data_width - 1 downto 0)
     );
 end ram;
 
 architecture Behavioral of ram is
-    type ram_t is array(0 to 255) of std_logic_vector(7 downto 0);
-    signal ram_data : ram_t;
+    type ram_t is array(0 to (2 ** address_width) - 1) of std_logic_vector(data_width - 1 downto 0);
+    signal data : ram_t;
 begin
     process(clock, we)
     begin
-        if rising_edge(clock) then
-            if we = '1' then
-                ram_data(to_integer(unsigned(write_address))) <= data_in;
-            end if;
+        if (rising_edge(clock) and we = '1') then
+            data(to_integer(unsigned(write_address))) <= d;
         end if;
+        q <= data(to_integer(unsigned(read_address)));
     end process;
-    data_out <= ram_data(to_integer(unsigned(read_address)));
 end Behavioral;

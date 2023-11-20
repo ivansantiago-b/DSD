@@ -2,7 +2,7 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 09/26/2023 08:51:02 PM
+-- Create Date: 11/19/2023 03:50:27 PM
 -- Design Name: 
 -- Module Name: control_unit - Behavioral
 -- Project Name: 
@@ -24,136 +24,143 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity control_unit is
     port(
-        clock, reset, go : in std_logic;
-        comp_n, comp_i : in std_logic;
-        wa_sel, i_sel, y_sel, ri_sel : out std_logic;
+        clock, clear, go_flag, i_flag, n_flag, dd_flag : in std_logic;
+        ram_we, n_we, i_we, x_we, y_we, o_we, sh_we, sh_se : out std_logic;
+        ri_sel, wa_sel, i_sel, y_sel, sh_sel : out std_logic;
         ra_sel : out std_logic_vector(1 downto 0);
-        n_we, i_we, x_we, y_we, t_we, ram_we : out std_logic;
-        i_ext, r: out std_logic_vector(7 downto 0)
+        r, i_ext : out std_logic_vector(11 downto 0)
     );
 end control_unit;
 
 architecture Behavioral of control_unit is
-    type state_t is (start, input, a1, a2, test_n, pop_x, pop_y, pop_z, push, test_i, done);
+    type state_t is (START, INPUT, A1, A2, AX, AY, AZ, PUSH, TEST_I, TEST_N, AN, DD_INPUT, DD_SHIFT, DD_UPDATE, DONE);
     signal current_state, next_state : state_t;
 begin
-state_register:
-    process(clock, reset)
+    process(clock, clear)
     begin
-        if reset = '1' then
-            current_state <= start;
+        if clear = '1' then
+            current_state <= START;
         elsif rising_edge(clock) then
             current_state <= next_state;
         end if;
-    end process state_register;
+    end process;
     
-machine_input:
-    process(current_state, go, comp_n, comp_i)
+    process(current_state, go_flag, n_flag, i_flag, dd_flag)
     begin
         case current_state is
-            when start =>
-                if go = '1' then
-                    next_state <= input;
+            when START =>
+                if go_flag = '1' then
+                    next_state <= INPUT;
                 else
-                    next_state <= start;
+                    next_state <= START;
                 end if;
-            when input =>
-                next_state <= a1;
-            when a1 =>
-                next_state <= a2;
-            when a2 =>
-                next_state <= test_n;
-            when test_n =>
-                if comp_n = '1' then
-                    next_state <= done;
+                -- Output
+                ri_sel <= '1';          -- Ram input = R
+                r <= x"000";
+                wa_sel <= '0';          -- Write address = I
+                i_sel <= '1';           -- I
+                i_ext <= x"000";
+                i_we <= '1';
+                ram_we <= '1';
+            when INPUT =>
+                next_state <= A1;
+                -- Ouput
+                n_we <= '1';
+                i_sel <= '0';
+                i_we <= '1';
+                ri_sel <= '1';
+                r <= x"001";
+                ram_we <= '0';
+            when A1  =>
+                next_state <= A2;
+                -- Ouput
+                ram_we <= '1';
+            when A2 =>
+                next_state <= TEST_N;
+                -- Ouput
+                i_we <= '0';
+            when TEST_N =>
+                if n_flag = '1' then
+                    next_state <= DD_INPUT;
                 else
-                    next_state <= pop_x;
+                    next_state <= AX;
                 end if;
-            when pop_x =>
-                next_state <= pop_y;
-            when pop_y =>
-                next_state <= pop_z;
-            when pop_z =>
-                next_state <= push;
-            when push =>
-                next_state <= test_i;
-            when test_i =>
-                if comp_i = '1' then
-                    next_state <= done;
+                -- Ouput
+                ram_we <= '0';
+            when AX =>
+                next_state <= AY;
+                -- Output
+                ra_sel <= "00";
+                x_we <= '1';
+                i_we <= '1';
+            when AY =>
+                next_state <= AZ;
+                -- Output
+                ra_sel <= "01";
+                i_we <= '0';
+                x_we <= '0';
+                y_sel <= '1';
+                y_we <= '1';
+            when AZ =>
+                next_state <= PUSH;
+                -- Output
+                ra_sel <= "11";
+                y_sel <= '0';
+                y_we <= '1';
+            when PUSH =>
+                next_state <= TEST_I;
+                -- Ouput
+                y_we <= '0';
+                wa_sel <= '0';
+                ri_sel <= '0';
+                ram_we <= '1';
+            when TEST_I =>
+                if i_flag = '1' then
+                    next_state <= DD_INPUT;
                 else
-                    next_state <= pop_x;
+                    next_state <= AX;
                 end if;
-            when done =>
-                next_state <= done;
+                -- Output
+                ram_we <= '0';
+            when DD_INPUT =>
+                -- Transition
+                next_state <= DD_SHIFT;
+                -- Output
+                i_sel <= '1';
+                i_ext <= x"000";
+                i_we <= '1';
+                ra_sel <= "10";
+                sh_sel <= '1';
+                sh_we <= '1';
+                sh_se <= '0';
+            when DD_SHIFT =>
+                -- Transition
+                if dd_flag = '1' then
+                    next_state <= DONE;
+                else
+                    next_state <= DD_UPDATE;
+                end if;
+                -- Output
+                sh_we <= '0';
+                sh_se <= '1';
+                i_we <= '0';
+            when DD_UPDATE =>
+                -- Transition
+                next_state <= DD_SHIFT;
+                -- Output
+                sh_sel <= '0';
+                sh_se <= '0';
+                sh_we <= '1';
+                i_sel <= '0';
+                i_we <= '1';
+            when DONE =>
+                -- Transition
+                next_state <= DONE;
+                -- Output
+                sh_se <= '0';
+                o_we <= '1';
             when others =>
                 null;
         end case;
     end process;
-
-machine_output:
-    process(current_state)
-    begin
-        case current_state is                                   
-            when start =>                                       
-                t_we <= '0';                                    
-                n_we <= '0';                                    
-                i_we <= '0';                                    
-                x_we <= '0';                                    
-                y_we <= '0';                                    
-                ram_we <= '0';                                  
-                i_sel <= '1';                                   
-                y_sel <= '0';                                   
-                wa_sel <= '0';                                  
-                ra_sel <= "00";                                 
-                ri_sel <= '1';                                  
-                r <= x"00";                                     
-                i_ext <= x"00";                                 
-            when input =>                                       
-                i_sel <= '1';   -- Select extern i              
-                i_we <= '1';    -- Write i register             
-                ri_sel <= '1';  -- Select extern ram input      
-                wa_sel <= '0';  -- Select i as write address    
-                i_ext <= x"00"; -- a(0) = 0                     
-                r <= x"00";                                     
-                ram_we <= '1';  -- Write RAM                    
-                n_we <= '1';    -- Write n register             
-            when a1 =>                                          
-                n_we <= '0';                                    
-                ram_we <= '0';                                  
-                i_ext <= x"01"; -- a(1) = 1                     
-                r <= x"01";                                     
-            when a2 =>                                          
-                ram_we <= '1';                                  
-                i_ext <= x"02"; -- a(2) = 2                     
-            when pop_x =>                                       
-                i_we <= '0';                                    
-                ram_we <= '0';                                  
-                ra_sel <= "00"; -- Select i as read address     
-                x_we <= '1';                                    
-            when pop_y =>                                       
-                x_we <= '0';                                    
-                ra_sel <= "01"; -- Select x as read address     
-                y_sel <= '1';   -- Select RAM out as y input    
-                y_we <= '1';                                    
-                i_sel <= '0';   -- Increment i                  
-                i_we <= '1';                                    
-            when pop_z =>                                       
-                i_we <= '0';                                    
-                ra_sel <= "11"; -- Select i - x as read address 
-                y_sel <= '0';   -- Select z as y input;         
-                y_we <= '1';                                    
-            when push =>                                        
-                y_we <= '0';                                    
-                ri_sel <= '0';  -- Select y as ram input        
-                wa_sel <= '0';  -- Select i as write address    
-                ram_we <= '1';                                  
-            when test_i =>                                      
-                ram_we <= '0';                                  
-            when done =>                                        
-                ra_sel <= "10"; -- Select n as read address     
-                t_we <= '1';    -- write t a(n)                 
-            when others =>                                      
-                null;                                           
-        end case;
-    end process machine_output;
 end Behavioral;
